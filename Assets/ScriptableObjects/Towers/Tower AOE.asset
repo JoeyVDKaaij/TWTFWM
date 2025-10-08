@@ -1,0 +1,30 @@
+%YAML 1.1
+%TAG !u! tag:unity3d.com,2011:
+--- !u!114 &11400000
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: a2515121105c4e038fe97c7722098735, type: 3}
+  m_Name: Tower AOE
+  m_EditorClassIdentifier: 
+  tower: {fileID: 8125619383845156722, guid: 16ebec26c95f1aa4f97d5846f5dd8cfb, type: 3}
+  price: 100
+  fireMode: 1
+  fireRate: 3
+  range: 3
+  bullet: {fileID: 0}
+  rangeUpgrades:
+  - rangeUpgrade: 5
+    cost: 100
+  - rangeUpgrade: 10
+    cost: 100
+  fireRateUpgrades:
+  - fireRateUpgrade: 0.5
+    cost: 100
+  - fireRateUpgrade: 0.1
+    cost: 200
