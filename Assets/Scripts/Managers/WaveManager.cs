@@ -1,3 +1,4 @@
+using System;
 using System.Collections.Generic;
 using System.Linq;
 using UnityEngine;
@@ -12,21 +13,23 @@ public class WaveManager : MonoBehaviour
     private WavesScriptableObjects[] waves = null;
     [SerializeField, Tooltip("Set how long the building phase last.")]
     private float timeForBuildingPhase = 10;
-
-    [HideInInspector] 
+    
     private List<SpawnScript> _spawners = new List<SpawnScript>();
 
-    private int spawnCount;
-    private int waveId = 0;
-    private Timer buildTimer;
-    private Timer enemyTimer;
+    private int _spawnCount;
+    private int _waveId = 0;
+    private Timer _buildTimer;
+    private Timer _enemyTimer;
 
-    private GameState state = GameState.building;
+    private GameState _state = GameState.building;
 
     // Starting at -1 to prevent extra lines in the SetUpWave method
     private int _currentWaveId = -1;
     private WavesScriptableObjects _currentWave = null;
-    private List<int> _enemySpawnCounter =  new List<int>();
+    private Dictionary<int, int> _enemyIdSpawnCounter =  new Dictionary<int, int>();
+    private int _enemiesAlive = 0;
+    
+    public event Action<int> onWaveChanged;
     
     #region UnityFunctions
     
@@ -42,7 +45,7 @@ public class WaveManager : MonoBehaviour
             // if (transform.parent.gameObject != null) DontDestroyOnLoad(transform.parent.gameObject);
             // else DontDestroyOnLoad(gameObject);
         }
-        else
+        else if (instance != this)
         {
             Destroy(gameObject);
         }
@@ -54,8 +57,8 @@ public class WaveManager : MonoBehaviour
     {
         SetupNextWave();
 
-        buildTimer = new Timer(timeForBuildingPhase, ChangeToEnemyPhase);
-        enemyTimer = new Timer(_currentWave.spawnRate, UpdateEnemyPhase);
+        _buildTimer = new Timer(timeForBuildingPhase, ChangeToEnemyPhase);
+        _enemyTimer = new Timer(_currentWave.spawnRate, UpdateEnemyPhase);
     }
 
     private void OnDestroy()
@@ -79,85 +82,74 @@ public class WaveManager : MonoBehaviour
             Debug.LogError("There is no waves or spawners assigned!");
             return;
         }
-        
-        if (state == GameState.play)
+
+        switch (_state)
         {
-            enemyTimer.UpdateTimer();
-        }
-        else if (state == GameState.building)
-        {
-            buildTimer.UpdateTimer();
+            case GameState.play:
+                _enemyTimer.UpdateTimer();
+                break;
+            case GameState.building:
+                _buildTimer.UpdateTimer();
+                break;
         }
     }
 
     private void UpdateEnemyPhase()
     {
-        int enemyId = getIdByChance();
-        if (enemyId != -1 && _currentWave.enemies[enemyId].enemyObj != null)
+        Enemy enemy = _currentWave.GetRandomEnemyByChance();
+        
+        if (enemy.enemyObj == null)
         {
-            _spawners[Random.Range(0,_spawners.Count)].SpawnGameObject(_currentWave.enemies[enemyId].enemyObj);
-            _enemySpawnCounter[enemyId]--;
+            Debug.LogError("Wave has no enemies to spawn.");
+            return;
         }
+        
+        _spawners[Random.Range(0,_spawners.Count)].SpawnGameObject(enemy.enemyObj);
+        _enemyIdSpawnCounter[_currentWave.GetEnemyIdByEnemy(enemy)]--;
+        _enemiesAlive++;
 
         // Check if every enemy has spawned in the current wave
         // Go to the next round if true
-        bool readyForWave = _enemySpawnCounter.All(x => x <= 0);
+        bool readyForWave = _enemyIdSpawnCounter.All(x => x.Value <= 0) &&
+                            _enemiesAlive <= 0;
         
         if (readyForWave)
         {
-            if (waveId + 1 >= waves.Length)
-                waveId = -1;
-            
+            _state = GameState.building;
+            if (GameManager.instance != null)
+                GameManager.instance.ChangeGameState(_state);
+
             SetupNextWave();
-            
-            state = GameManager.instance.ChangeGameState(GameState.building);
         }
     }
 
     private void ChangeToEnemyPhase()
     {
-        state = GameManager.instance.ChangeGameState(GameState.play);
-    }
-
-    private int getIdByChance()
-    {
-        Enemy[] enemies = _currentWave.enemies;
-        
-        int summedUpChances = 0;
-        for (int i = 0; i < enemies.Length; i++)
-        {
-            if (enemies[i].spawnCounter > 0)
-                summedUpChances += enemies[i].chanceOfSpawning;
-        }
-        summedUpChances += _currentWave.chanceOfNothing;
-        float currentChance = summedUpChances / 100 * Random.Range(0,101);
-        summedUpChances = 0;
-        for (int i = 0; i < enemies.Length; i++)
-        {
-            if (enemies[i].spawnCounter > 0 && enemies[i].chanceOfSpawning > 0)
-            {
-                summedUpChances += enemies[i].chanceOfSpawning;
-                if (summedUpChances >= currentChance)
-                    return i;
-            }
-        }
-        return -1;
+        _state = GameState.play;
+        if (GameManager.instance != null)
+            GameManager.instance.ChangeGameState(_state);
     }
 
     private void SetupNextWave()
     {
         _currentWaveId++;
-        if (_currentWaveId >= waves.Length) return;
+        if (_currentWaveId >= waves.Length)
+        {
+            ChangeToGameOver();
+            return;
+        }
         
         _currentWave = waves[_currentWaveId];
 
-        _enemySpawnCounter.Clear();
-        foreach (Enemy enemy in _currentWave.enemies)
+        _enemyIdSpawnCounter.Clear();
+        for (int i = 0; i < _currentWave.enemies.Length; i++)
         {
-            _enemySpawnCounter.Add(enemy.spawnCounter);
+            _enemyIdSpawnCounter.Add(i, _currentWave.enemies[i].spawnCounter);
         }
         
-        if (_enemySpawnCounter.Count == 0) SetupNextWave();
+        if (_enemyIdSpawnCounter.Count == 0) SetupNextWave();
+        
+        onWaveChanged?.Invoke(_currentWaveId+1);
     }
 
     public void AddSpawner(SpawnScript spawner)
@@ -169,6 +161,21 @@ public class WaveManager : MonoBehaviour
     {
         _spawners.Remove(spawner);
     }
+
+    private void ChangeToGameOver()
+    {
+        // TODO: Finish the game or SOMETHING
+        _state = GameState.gameOver;
+        
+        Debug.Log($"Game Over! State: {_state}");
+        
+        if (GameManager.instance != null) GameManager.instance.ChangeGameState(_state);
+    }
+
+    public void EnemyDied()
+    {
+        _enemiesAlive--;
+    }
     
     #endregion
 
@@ -176,21 +183,16 @@ public class WaveManager : MonoBehaviour
 
     private void ChangeGameState(GameState pState)
     {
-        state = pState;
+        _state = pState;
     }
 
     #endregion
     
     #region Getters
 
-    public WaveManager Instance
-    {
-        get { return instance; }
-    }
-
     public int GetWave
     {
-        get { return waveId + 1; }
+        get { return _waveId + 1; }
     }
 
     public int GetAmountOfWaves
@@ -200,9 +202,8 @@ public class WaveManager : MonoBehaviour
 
     public int GetBuildingPhaseTimer
     {
-        get { return Mathf.RoundToInt(timeForBuildingPhase - buildTimer.Time); }
+        get { return Mathf.RoundToInt(timeForBuildingPhase - _buildTimer.Time); }
     }
     
     #endregion
-
 }

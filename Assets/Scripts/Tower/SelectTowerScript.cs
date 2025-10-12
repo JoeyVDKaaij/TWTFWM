@@ -31,7 +31,8 @@ public class SelectTowerScript : MonoBehaviour
     private void OnMouseDown()
     {
         towerSelected = true;
-        GuiManager.instance.ChangeTowerMenu(true, gameObject);
+        if (GuiManager.instance != null)
+            GuiManager.instance.ChangeTowerMenu(true, gameObject);
     }
     
     private void deselectedTower(bool pSelectedATower, GameObject pTower)

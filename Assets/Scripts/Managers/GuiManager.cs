@@ -65,9 +65,9 @@ public class GuiManager : MonoBehaviour
 
     private void ChangeTextUI()
     {
-        healthText.SetText("Health: " + GameManager.instance.GetHealth);
-        if (showAmountOfWaves) waveText.SetText("Wave: " + WaveManager.instance.GetWave + " out of " + WaveManager.instance.GetAmountOfWaves);
-        else waveText.SetText("Wave: " + WaveManager.instance.GetWave);
+        if (GameManager.instance != null) return;
+        
+        healthText.SetText("Health: " + GameManager.instance?.playerHp?.CurrentHp);
         moneyText.SetText("Money: $" + GameManager.instance.GetMoney);
         timeText.SetText("Time left until next round: " + WaveManager.instance.GetBuildingPhaseTimer);
     }

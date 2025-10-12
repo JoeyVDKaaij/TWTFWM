@@ -116,7 +116,7 @@ public class ShootScript : MonoBehaviour
             {
                 if (pCollider.CompareTag("Enemy"))
                 {
-                    pCollider.GetComponent<EnemyScript>().GainDamage(aoeDamage);
+                    // pCollider.GetComponent<EnemyScript>().GainDamage(aoeDamage);
                     hitEnemy = true;
                 }
             }

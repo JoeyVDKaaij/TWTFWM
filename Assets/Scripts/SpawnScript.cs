@@ -3,12 +3,6 @@ using UnityEngine;
 
 public class SpawnScript : MonoBehaviour
 {
-    private void Start()
-    {
-        if (WaveManager.instance != null)
-            WaveManager.instance.AddSpawner(this);
-    }
-
     private void OnEnable()
     {
         if (WaveManager.instance != null)
@@ -25,6 +19,7 @@ public class SpawnScript : MonoBehaviour
     {
         if (pObj == null) return;
         
+        Debug.Log("Instantiating Object");
         Instantiate(pObj, transform);
     }
 }

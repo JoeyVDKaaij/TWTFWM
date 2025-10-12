@@ -49,7 +49,7 @@ public class MovementScript : MonoBehaviour
     {
         // Initialize the agent variable and the target variable if it's not set already.
         agent = GetComponent<NavMeshAgent>();
-        if (!(target != null))
+        if (target == null)
             target = GameObject.FindGameObjectWithTag("EndPoint").transform;
 
         if (movementType == MovementType.staticPath)

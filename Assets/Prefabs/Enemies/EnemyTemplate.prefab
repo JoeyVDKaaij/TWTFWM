@@ -13,10 +13,11 @@ GameObject:
   - component: {fileID: 256142557715913814}
   - component: {fileID: 3572908585456813008}
   - component: {fileID: 8592580430218414817}
-  - component: {fileID: 6370124656518085417}
+  - component: {fileID: 4957225648783124435}
   - component: {fileID: 3649148538882719}
+  - component: {fileID: 2448774846728844622}
   m_Layer: 0
-  m_Name: Enemy
+  m_Name: EnemyTemplate
   m_TagString: Enemy
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -131,7 +132,7 @@ NavMeshAgent:
   m_BaseOffset: 0.5
   m_WalkableMask: 4294967295
   m_ObstacleAvoidanceType: 4
---- !u!114 &6370124656518085417
+--- !u!114 &4957225648783124435
 MonoBehaviour:
   m_ObjectHideFlags: 0
   m_CorrespondingSourceObject: {fileID: 0}
@@ -140,21 +141,12 @@ MonoBehaviour:
   m_GameObject: {fileID: 299637646819408117}
   m_Enabled: 1
   m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: dd43fcd63dae20143a7fb17f97f9c094, type: 3}
+  m_Script: {fileID: 11500000, guid: 5155c9c0fa504c2a827f9d3a508ef065, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  movementSpeed: 5
-  movementType: 1
-  axis: 0
-  reverseMovement: 0
-  moveInWorldSpace: 0
+  movementSpeed: 1
   target: {fileID: 0}
-  pathPoints:
-  - {x: 0, y: 0, z: 0}
-  - {x: 25.18, y: 0, z: 0}
-  - {x: 19.66, y: 0, z: 3.13}
-  loopPath: 1
-  destroyOnLastPoint: 0
+  debuggingMode: 0
 --- !u!114 &3649148538882719
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -167,9 +159,23 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 8ebbdce79ebf55646b747e48a6734091, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  gold: 1
-  health: 10
-  damage: 1
+  damage: 10
+--- !u!114 &2448774846728844622
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 299637646819408117}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 23e113afa4154c2fbc4712028b4b8f5d, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  maxHp: 100
+  startingHp: 100
+  enableDebuggingMode: 0
+  gold: 10
 --- !u!1 &433899469905305154
 GameObject:
   m_ObjectHideFlags: 0
@@ -463,7 +469,8 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: d0c644cb8b78cb34fa0148b4319b6f93, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  HpBarSliderSpeed: 1
+  _hp: {fileID: 2448774846728844622}
+  HpBarSliderSpeed: 2
 --- !u!1 &8538981104664718845
 GameObject:
   m_ObjectHideFlags: 0

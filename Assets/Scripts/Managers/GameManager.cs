@@ -4,10 +4,14 @@ using UnityEngine;
 public class GameManager : MonoBehaviour
 {
     public static GameManager instance {  get; private set; }
+
+    public Health playerHp
+    {
+        get;
+        private set;
+    }
     
     [Header("Game Settings Settings")]
-    [SerializeField, Tooltip("Set how much HP the player has.")]
-    private float health = 100;
     [SerializeField, Tooltip("Set how much money the player has."), Min(0)]
     private float money = 0;
     [SerializeField, Tooltip("Set how fast the game goes."), Min(0)]
@@ -15,7 +19,7 @@ public class GameManager : MonoBehaviour
 
     private float fixedDeltaTime;
 
-    private GameState state = GameState.building;
+    public GameState state { get; private set; } = GameState.building;
 
     public static event Action<GameState> onGameStateChanged;
 
@@ -31,6 +35,8 @@ public class GameManager : MonoBehaviour
         {
             Destroy(gameObject);
         }
+        
+        playerHp = GetComponent<PlayerHealth>();
 
         this.fixedDeltaTime = Time.fixedDeltaTime;
     }
@@ -45,12 +51,6 @@ public class GameManager : MonoBehaviour
     
     private void Update()
     {
-        if (health <= 0)
-        {
-            state = GameState.gameOver;
-            onGameStateChanged?.Invoke(state);
-        }
-        
         // Set the game speed depending on the gameSpeed value
         if (Time.timeScale != gameSpeed)
         {
@@ -62,16 +62,6 @@ public class GameManager : MonoBehaviour
 
     #region Getters
 
-    public GameManager Instance 
-    { 
-        get { return instance; }
-    }
-
-    public float GetHealth
-    {
-        get { return health; }
-    }
-
     public float GetMoney
     {
         get { return money; }
@@ -80,12 +70,6 @@ public class GameManager : MonoBehaviour
     #endregion
 
     #region Functions and Methods
-
-
-    public void DamagePlayer(float pDamage)
-    {
-        health -= pDamage;
-    }
 
     public GameState ChangeGameState(GameState pState)
     {

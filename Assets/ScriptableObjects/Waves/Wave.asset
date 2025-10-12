@@ -13,7 +13,6 @@ MonoBehaviour:
   m_Name: Wave
   m_EditorClassIdentifier: 
   spawnRate: 5
-  chanceOfNothing: 0
   enemies:
   - enemyObj: {fileID: 299637646819408117, guid: 3519909964d82e54e8f45351236f7b90,
       type: 3}
