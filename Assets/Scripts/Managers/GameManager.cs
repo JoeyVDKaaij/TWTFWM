@@ -13,13 +13,46 @@ public class GameManager : MonoBehaviour
     
     [Header("Game Settings Settings")]
     [SerializeField, Tooltip("Set how much money the player has."), Min(0)]
-    private float money = 0;
+    private int money = 0;
     [SerializeField, Tooltip("Set how fast the game goes."), Min(0)]
     private float gameSpeed = 1f;
 
     private float fixedDeltaTime;
 
-    public GameState state { get; private set; } = GameState.building;
+    [SerializeField, Tooltip("Set the current state of the game.")]
+    private GameState state = GameState.building;
+    [SerializeField, Tooltip("Set how fast the game goes.")]
+    private GameObject winScreenPrefab = null;
+    [SerializeField, Tooltip("Set how fast the game goes.")]
+    private GameObject loseScreenPrefab = null;
+
+    public static event Action<int> onMoneyChanged;
+    
+    public int Money
+    {
+        get
+        {
+            return money;
+        }
+        private set
+        {
+            money = value;
+
+            if (money < 0) money = 0;
+            
+            onMoneyChanged?.Invoke(money);
+        }
+    }
+
+
+    public GameState State
+    {
+        get { return state; }
+        private set
+        {
+            state = value;
+        }
+    }
 
     public static event Action<GameState> onGameStateChanged;
 
@@ -28,8 +61,6 @@ public class GameManager : MonoBehaviour
         if (instance == null)
         {
             instance = this;
-            if (transform.parent.gameObject != null) DontDestroyOnLoad(transform.parent.gameObject);
-            else DontDestroyOnLoad(gameObject);
         }
         else
         {
@@ -39,6 +70,13 @@ public class GameManager : MonoBehaviour
         playerHp = GetComponent<PlayerHealth>();
 
         this.fixedDeltaTime = Time.fixedDeltaTime;
+    }
+
+    private void Start()
+    {
+        onMoneyChanged?.Invoke(money);
+        onGameStateChanged?.Invoke(state);
+        if (playerHp != null) playerHp.InvokeOnHealthChanged();
     }
 
     private void OnDestroy()
@@ -58,6 +96,12 @@ public class GameManager : MonoBehaviour
             // Adjust fixed delta time according to timescale
             Time.fixedDeltaTime = this.fixedDeltaTime * Time.timeScale;
         }
+    }
+
+    public void ChangeGameSpeed(float pSpeed)
+    {
+        if (pSpeed >= 0)
+            gameSpeed = pSpeed;
     }
 
     #region Getters
@@ -80,12 +124,33 @@ public class GameManager : MonoBehaviour
 
     public void ChargePlayer(int pPrice)
     {
-        money -= pPrice;
+        Money -= pPrice;
     }
 
     public void AddMoney(int pMoney)
     {
-        money += pMoney;
+        Money += pMoney;
+    }
+
+    public void resultScreen(bool wonGame)
+    {
+        if (winScreenPrefab == null)
+        {
+            if (loseScreenPrefab != null)
+            {
+                Instantiate(loseScreenPrefab);
+            }
+            
+            return;
+        }
+        
+        if (loseScreenPrefab == null)
+        {
+            Instantiate(winScreenPrefab);
+            return;
+        }
+        
+        Instantiate(wonGame ? winScreenPrefab : loseScreenPrefab);
     }
 
     #endregion

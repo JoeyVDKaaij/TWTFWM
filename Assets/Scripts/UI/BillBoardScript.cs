@@ -3,15 +3,15 @@ using UnityEngine;
 public class BillBoardScript : MonoBehaviour
 {
     [Header("Billboard Settings")]
-    [SerializeField, Tooltip("Set to true if the GameObject needs to stay above the GameObject it's attached to.")]
-    private bool topOfObject = false;
+    [SerializeField, Tooltip("Set to true if the GameObject needs to rotate towards the upwards direction. " +
+                             "Otherwise look directly at the camera. ")]
+    private bool lookUp = false;
         
     void Update()
     {
-        if (topOfObject)
+        if (lookUp)
         {
             transform.rotation = Quaternion.Euler(90, -transform.parent.rotation.y, -transform.parent.rotation.z);
-            transform.position = transform.parent.position + new Vector3(0,0,1);
         }
         else
         {

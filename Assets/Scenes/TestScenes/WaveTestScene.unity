@@ -567,6 +567,17 @@ PrefabInstance:
       propertyPath: m_StaticEditorFlags
       value: 2147483639
       objectReference: {fileID: 0}
+    - target: {fileID: 2694541834010181008, guid: 3b6f741d9a990e847ae177d8377b89bd,
+        type: 3}
+      propertyPath: m_LocalPosition.y
+      value: 1.07
+      objectReference: {fileID: 0}
+    - target: {fileID: 4055731567371470193, guid: 3b6f741d9a990e847ae177d8377b89bd,
+        type: 3}
+      propertyPath: m_NavMeshData
+      value: 
+      objectReference: {fileID: 23800000, guid: e7b7ba21cdde2fc48b5a100e0f037491,
+        type: 2}
     - target: {fileID: 4066416492707477810, guid: 3b6f741d9a990e847ae177d8377b89bd,
         type: 3}
       propertyPath: m_LocalPosition.y
@@ -591,6 +602,11 @@ PrefabInstance:
         type: 3}
       propertyPath: m_Name
       value: TestMap
+      objectReference: {fileID: 0}
+    - target: {fileID: 9077825416646048967, guid: 3b6f741d9a990e847ae177d8377b89bd,
+        type: 3}
+      propertyPath: m_LocalPosition.y
+      value: 0.51
       objectReference: {fileID: 0}
     m_RemovedComponents: []
     m_RemovedGameObjects: []

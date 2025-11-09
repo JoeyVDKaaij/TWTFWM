@@ -14,7 +14,7 @@ public class WaveManager : MonoBehaviour
     [SerializeField, Tooltip("Set how long the building phase last.")]
     private float timeForBuildingPhase = 10;
     
-    private List<SpawnScript> _spawners = new List<SpawnScript>();
+    private List<EnemySpawnScript> _spawners = new List<EnemySpawnScript>();
 
     private int _spawnCount;
     private int _waveId = 0;
@@ -38,12 +38,6 @@ public class WaveManager : MonoBehaviour
         if (instance == null)
         {
             instance = this;
-            
-            // Currently not really needed since it is only really needed for one scene!
-            // Maybe in future updates!
-            // TODO: Look into this!
-            // if (transform.parent.gameObject != null) DontDestroyOnLoad(transform.parent.gameObject);
-            // else DontDestroyOnLoad(gameObject);
         }
         else if (instance != this)
         {
@@ -58,7 +52,13 @@ public class WaveManager : MonoBehaviour
         SetupNextWave();
 
         _buildTimer = new Timer(timeForBuildingPhase, ChangeToEnemyPhase);
-        _enemyTimer = new Timer(_currentWave.spawnRate, UpdateEnemyPhase);
+        if (_currentWave != null)
+            _enemyTimer = new Timer(_currentWave.spawnRate, UpdateEnemyPhase);
+        
+        if (waves == null || _spawners == null)
+        {
+            Debug.LogError("There is no waves or spawners assigned!");
+        }
     }
 
     private void OnDestroy()
@@ -77,12 +77,6 @@ public class WaveManager : MonoBehaviour
 
     void Update()
     {
-        if (waves == null && _spawners == null)
-        {
-            Debug.LogError("There is no waves or spawners assigned!");
-            return;
-        }
-
         switch (_state)
         {
             case GameState.play:
@@ -96,17 +90,7 @@ public class WaveManager : MonoBehaviour
 
     private void UpdateEnemyPhase()
     {
-        Enemy enemy = _currentWave.GetRandomEnemyByChance();
-        
-        if (enemy.enemyObj == null)
-        {
-            Debug.LogError("Wave has no enemies to spawn.");
-            return;
-        }
-        
-        _spawners[Random.Range(0,_spawners.Count)].SpawnGameObject(enemy.enemyObj);
-        _enemyIdSpawnCounter[_currentWave.GetEnemyIdByEnemy(enemy)]--;
-        _enemiesAlive++;
+        HandleEnemySpawning();
 
         // Check if every enemy has spawned in the current wave
         // Go to the next round if true
@@ -123,11 +107,34 @@ public class WaveManager : MonoBehaviour
         }
     }
 
+    private void HandleEnemySpawning()
+    {
+        if (_spawners.Count <= 0) return;
+        
+        int enemyId = _currentWave.GetRandomEnemyIdByChance();
+        if (enemyId < 0 || _enemyIdSpawnCounter[enemyId] <= 0) return;
+        
+        Enemy currentEnemy = _currentWave.enemies[enemyId];
+        if (currentEnemy.enemyObj == null)
+        {
+            Debug.LogError("Wave has no enemies to spawn.");
+            return;
+        }
+        
+        int randomSpawnerId = Random.Range(0, _spawners.Count);
+        _spawners[randomSpawnerId].SpawnGameObject(currentEnemy.enemyObj);
+        
+        if (_enemyIdSpawnCounter.ContainsKey(enemyId))
+            _enemyIdSpawnCounter[enemyId]--;
+        
+        _enemiesAlive++;
+    }
+
     private void ChangeToEnemyPhase()
     {
-        _state = GameState.play;
-        if (GameManager.instance != null)
-            GameManager.instance.ChangeGameState(_state);
+        if (GameManager.instance != null) 
+            _state = GameManager.instance.ChangeGameState(GameState.play);
+        else _state = GameState.play;
     }
 
     private void SetupNextWave()
@@ -152,29 +159,31 @@ public class WaveManager : MonoBehaviour
         onWaveChanged?.Invoke(_currentWaveId+1);
     }
 
-    public void AddSpawner(SpawnScript spawner)
+    public void AddSpawner(EnemySpawnScript spawner)
     {
         _spawners.Add(spawner);
     }
 
-    public void RemoveSpawner(SpawnScript spawner)
+    public void RemoveSpawner(EnemySpawnScript spawner)
     {
         _spawners.Remove(spawner);
     }
 
     private void ChangeToGameOver()
     {
-        // TODO: Finish the game or SOMETHING
         _state = GameState.gameOver;
         
-        Debug.Log($"Game Over! State: {_state}");
-        
-        if (GameManager.instance != null) GameManager.instance.ChangeGameState(_state);
+        if (GameManager.instance != null)
+        {
+            GameManager.instance.ChangeGameState(_state);
+            GameManager.instance.resultScreen(true);
+        }
     }
 
     public void EnemyDied()
     {
         _enemiesAlive--;
+        Debug.Log($"Enemy died. Counting: {_enemiesAlive}");
     }
     
     #endregion
@@ -183,6 +192,7 @@ public class WaveManager : MonoBehaviour
 
     private void ChangeGameState(GameState pState)
     {
+        Debug.Log($"State changed to {pState}");
         _state = pState;
     }
 

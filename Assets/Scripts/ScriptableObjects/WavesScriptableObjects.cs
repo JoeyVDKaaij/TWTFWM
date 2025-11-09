@@ -1,6 +1,4 @@
-using System;
 using System.Collections.Generic;
-using System.Linq;
 using UnityEngine;
 using Random = UnityEngine.Random;
 
@@ -45,47 +43,41 @@ public class WavesScriptableObjects : ScriptableObject
         return enemies[Random.Range(0, enemies.Length)];
     }
 
-    public Enemy GetRandomEnemyByChance()
+    public int GetRandomEnemyIdByChance()
     {
-        if (enemies.Length == 0) return new Enemy(null, 1, 100);
+        if (enemies == null || enemies.Length == 0) 
+            return -1;
 
-        List<Enemy> randomizedEnemyList = SortListByRandom();
+        List<int> ids = new List<int>();
+        for (int i = 0; i < enemies.Length; i++) ids.Add(i);
+        
+        List<int> randomizedEnemyIdList = SortIdListByRandom(ids);
         
         int chance = Random.Range(0, 100);
-        Enemy? chosenEnemy = null;
+        int chosenId = -1;
         
-        foreach (Enemy enemy in randomizedEnemyList)
+        foreach (int id in randomizedEnemyIdList)
         {
-            if (enemy.chanceOfSpawning >= chance) chosenEnemy = enemy;
+            if (enemies[id].chanceOfSpawning >= chance) chosenId = id;
         }
-
-        if (chosenEnemy == null) chosenEnemy = randomizedEnemyList[0];
         
-        return (Enemy)chosenEnemy;
+        return chosenId;
     }
 
-    private List<Enemy> SortListByRandom()
+    private List<int> SortIdListByRandom(List<int> pId)
     {
-        if (enemies.Length == 0) return null;
+        if (pId == null || pId.Count == 0) return null;
         
-        List<Enemy> pendingEnemies = enemies.ToList();
-        List<Enemy> settledEnemies = new List<Enemy>();
+        List<int> settledIdList = new List<int>();
         
         do
         {
-            int enemyId = Random.Range(0, pendingEnemies.Count);
-            settledEnemies.Add(pendingEnemies[enemyId]);
-            pendingEnemies.RemoveAt(enemyId);
+            int randomId = Random.Range(0, pId.Count);
+            settledIdList.Add(pId[randomId]);
+            pId.RemoveAt(randomId);
         } 
-        while (pendingEnemies.Count > 0);
+        while (pId.Count > 0);
         
-        return settledEnemies;
-    }
-
-    // Find ID of enemy in enemy array.
-    // TODO: Might be an expensive implementation. Consult QA
-    public int GetEnemyIdByEnemy(Enemy pEnemy)
-    {
-        return Array.IndexOf(enemies, pEnemy);
+        return settledIdList;
     }
 }

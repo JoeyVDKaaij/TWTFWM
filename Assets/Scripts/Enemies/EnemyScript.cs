@@ -13,6 +13,8 @@ public class EnemyScript : MonoBehaviour
         {
             if (GameManager.instance?.playerHp != null)
                 GameManager.instance.playerHp.TakeDamage(damage);
+            if (WaveManager.instance != null)
+                WaveManager.instance.EnemyDied();
             
             Destroy(gameObject);
         }

@@ -8,16 +8,17 @@ TagManager:
   - Wall
   - Tower
   - Enemy
+  - TowerGround
   layers:
   - Default
   - TransparentFX
   - Ignore Raycast
-  - 
+  - Enemy
   - Water
   - UI
-  - 
-  - 
-  - 
+  - Ground
+  - Outline
+  - Path
   - 
   - 
   - 

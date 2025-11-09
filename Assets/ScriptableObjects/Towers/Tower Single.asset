@@ -12,9 +12,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: a2515121105c4e038fe97c7722098735, type: 3}
   m_Name: Tower Single
   m_EditorClassIdentifier: 
-  tower: {fileID: 6137219523786859003, guid: d1e1f4c579fbfad4aa3b71d1bedbf1e5, type: 3}
-  price: 100
-  fireMode: 0
-  fireRate: 3
-  range: 3
-  bullet: {fileID: 0}
+  towerPrefab: {fileID: 2280586692941405487, guid: 30ad5605861ef224481c2e682cda479f,
+    type: 3}
+  cost: 100
+  icon: {fileID: 21300000, guid: 4ab9e4c3f27125a478477eeae10d599f, type: 3}

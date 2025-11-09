@@ -16,7 +16,9 @@ public class Health : MonoBehaviour
             
             if (_currentHp <= 0) Death();
             
+            #if UNITY_EDITOR
             if (enableDebuggingMode) Debug.Log(_currentHp);
+            #endif
         }
     }
     
@@ -28,7 +30,8 @@ public class Health : MonoBehaviour
     [SerializeField, Tooltip("Set HP that the object starts off with."), Min(1)]
     private float startingHp = 100;
     
-    [SerializeField, Tooltip("Enables debugging shortcuts that allows for testing the health features.")]
+    [SerializeField, Tooltip("Enables debugging shortcuts that allows for testing the health features." +
+                             "Press I for -10 HP, O for +10 HP and P to set the HP back to max HP.")]
     protected bool enableDebuggingMode = false;
 
     // Ensuring starting HP never goes beyond maxHp
@@ -79,4 +82,10 @@ public class Health : MonoBehaviour
     }
 #endif
     #endregion
+    
+    
+    public void InvokeOnHealthChanged()
+    {
+        OnHPChanged?.Invoke(_currentHp);
+    }
 }

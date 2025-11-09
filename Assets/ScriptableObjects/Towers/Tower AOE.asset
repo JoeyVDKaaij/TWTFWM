@@ -12,19 +12,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: a2515121105c4e038fe97c7722098735, type: 3}
   m_Name: Tower AOE
   m_EditorClassIdentifier: 
-  tower: {fileID: 8125619383845156722, guid: 16ebec26c95f1aa4f97d5846f5dd8cfb, type: 3}
-  price: 100
-  fireMode: 1
-  fireRate: 3
-  range: 3
-  bullet: {fileID: 0}
-  rangeUpgrades:
-  - rangeUpgrade: 5
-    cost: 100
-  - rangeUpgrade: 10
-    cost: 100
-  fireRateUpgrades:
-  - fireRateUpgrade: 0.5
-    cost: 100
-  - fireRateUpgrade: 0.1
-    cost: 200
+  towerPrefab: {fileID: 8839904605628305829, guid: 522c79ea1c1fd064aa867a10277394c4,
+    type: 3}
+  cost: 100
+  icon: {fileID: 21300000, guid: 3ac0b5c68a3bd784580190cdbcf423e7, type: 3}
