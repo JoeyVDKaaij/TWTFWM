@@ -7,7 +7,7 @@ public class BillBoardScript : MonoBehaviour
                              "Otherwise look directly at the camera. ")]
     private bool lookUp = false;
         
-    void Update()
+    private void Update()
     {
         if (lookUp)
         {

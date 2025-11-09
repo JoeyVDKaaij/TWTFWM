@@ -207,7 +207,8 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   segments: 50
-  lineWidth: 0.2
+  rangeCircleWidth: 0.1
+  updateRangeCirclePerFrame: 0
 --- !u!120 &159529403195511012
 LineRenderer:
   serializedVersion: 2

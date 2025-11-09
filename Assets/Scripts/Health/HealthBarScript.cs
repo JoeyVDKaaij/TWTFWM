@@ -8,15 +8,13 @@ public class HealthBarScript : MonoBehaviour
     private Slider _slider;
     private Coroutine _coroutine;
 
-    [FormerlySerializedAs("_hp")]
-    [FormerlySerializedAs("_enemyHp")]
     [Header("Health Bar Settings")] 
     [SerializeField]
     private Health health;
     [SerializeField, Tooltip("Set the speed on how fast the Health Bar is changing in seconds"), Min(0.1f)]
     private float HealthBarSliderSpeed = 1;
     
-    void Start()
+    private void Start()
     {
         _slider = GetComponent<Slider>();
         _slider.maxValue = health.MaxHp;

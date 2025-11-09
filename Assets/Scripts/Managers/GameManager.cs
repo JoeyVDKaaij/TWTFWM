@@ -104,15 +104,6 @@ public class GameManager : MonoBehaviour
             gameSpeed = pSpeed;
     }
 
-    #region Getters
-
-    public float GetMoney
-    {
-        get { return money; }
-    }
-
-    #endregion
-
     #region Functions and Methods
 
     public GameState ChangeGameState(GameState pState)
@@ -160,6 +151,5 @@ public enum GameState
 {
     play,
     building,
-    pause,
     gameOver
 }

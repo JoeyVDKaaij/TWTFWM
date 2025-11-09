@@ -4,7 +4,7 @@ using UnityEngine.Serialization;
 
 public class PauseMenuToggler : MonoBehaviour
 {
-    [FormerlySerializedAs("clickAction")] [SerializeField, Tooltip("Set the Mouse Click Input Action.")]
+    [SerializeField, Tooltip("Set the Mouse Click Input Action.")]
     private InputActionReference pauseMenuAction;
     [SerializeField, Tooltip("Set the game object holding the pause menu.")]
     private GameObject pauseMenu;
