@@ -19,6 +19,8 @@ public class UpgradeShopSetupScript : MonoBehaviour
     private TMP_Text attackType = null;
     [SerializeField, Tooltip("Set the upgrade buttons.")]
     private UpgradePurchaseButton[] upgradeButtons = null;
+    [SerializeField, Tooltip("Set the destroy button.")]
+    private DestroyTowerButton destroyButton = null;
     
     // Map type to readable string
     private static readonly Dictionary<Type, string> attackNames = new()
@@ -39,6 +41,8 @@ public class UpgradeShopSetupScript : MonoBehaviour
         
         if (pTowerIcon != null)
             icon.sprite = pTowerIcon;
+        
+        destroyButton.SetTarget(pUS.gameObject);
 
         if (upgradeButtons != null && upgradeButtons.Length > 0)
         {

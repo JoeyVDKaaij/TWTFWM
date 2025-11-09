@@ -50,13 +50,7 @@ public class SetupShop : MonoBehaviour
     {
         if (IsPointerOverPanel() || towerSelectionUI == null || buyButtonContainer == null) return;
 
-        towerSelectionUI.gameObject.SetActive(false);
-        buyButtonContainer.SetActive(true);
-
-        if (selectedTowerLineRend != null)
-        {
-            selectedTowerLineRend.enabled = false;
-        }
+        ChangeToBuyTowerView();
     }
 
     private bool IsPointerOverPanel()
@@ -93,5 +87,16 @@ public class SetupShop : MonoBehaviour
         }
 
         selectedTowerLineRend = pLineRend;
+    }
+
+    public void ChangeToBuyTowerView()
+    {
+        towerSelectionUI.gameObject.SetActive(false);
+        buyButtonContainer.SetActive(true);
+
+        if (selectedTowerLineRend != null)
+        {
+            selectedTowerLineRend.enabled = false;
+        }
     }
 }

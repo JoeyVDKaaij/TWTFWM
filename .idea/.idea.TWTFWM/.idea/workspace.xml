@@ -6,16 +6,11 @@
   <component name="ChangeListManager">
     <list default="true" id="a28b457a-1b38-409c-91e2-19edf8c650be" name="Changes" comment="">
       <change beforePath="$PROJECT_DIR$/.idea/.idea.TWTFWM/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/.idea.TWTFWM/.idea/workspace.xml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/Assets/Editor/MovementScriptEditor.cs" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/Assets/Editor/MovementScriptEditor.cs.meta" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/Assets/Prefabs/Towers/Single Fire Canon.prefab" beforeDir="false" afterPath="$PROJECT_DIR$/Assets/Prefabs/Towers/Single Fire Canon.prefab" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/Assets/Scripts/Enemies/MovementScript.cs" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/Assets/Scripts/Enemies/MovementScript.cs.meta" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/Assets/Scripts/Health/HealthBarScript.cs" beforeDir="false" afterPath="$PROJECT_DIR$/Assets/Scripts/Health/HealthBarScript.cs" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/Assets/Scripts/Managers/GameManager.cs" beforeDir="false" afterPath="$PROJECT_DIR$/Assets/Scripts/Managers/GameManager.cs" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/Assets/Scripts/Movement/Movement.cs" beforeDir="false" afterPath="$PROJECT_DIR$/Assets/Scripts/Movement/Movement.cs" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/Assets/Scripts/UI/BillBoardScript.cs" beforeDir="false" afterPath="$PROJECT_DIR$/Assets/Scripts/UI/BillBoardScript.cs" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/Assets/Scripts/UI/PauseMenuToggler.cs" beforeDir="false" afterPath="$PROJECT_DIR$/Assets/Scripts/UI/PauseMenuToggler.cs" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/Assets/Prefabs/Towers/Bullet.prefab" beforeDir="false" afterPath="$PROJECT_DIR$/Assets/Prefabs/Towers/Bullet.prefab" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/Assets/Prefabs/UI/TowerShopCanvas.prefab" beforeDir="false" afterPath="$PROJECT_DIR$/Assets/Prefabs/UI/TowerShopCanvas.prefab" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/Assets/Scenes/Template Scene/TemplateGame.unity" beforeDir="false" afterPath="$PROJECT_DIR$/Assets/Scenes/Template Scene/TemplateGame.unity" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/Assets/Scripts/UI/Tower/SetupShop.cs" beforeDir="false" afterPath="$PROJECT_DIR$/Assets/Scripts/UI/Tower/SetupShop.cs" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/Assets/Scripts/UI/Tower/UpgradeShopSetupScript.cs" beforeDir="false" afterPath="$PROJECT_DIR$/Assets/Scripts/UI/Tower/UpgradeShopSetupScript.cs" afterDir="false" />
     </list>
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
@@ -183,7 +178,7 @@
       <workItem from="1762452998748" duration="11118000" />
       <workItem from="1762555089352" duration="6657000" />
       <workItem from="1762601488402" duration="37910000" />
-      <workItem from="1762685764512" duration="25650000" />
+      <workItem from="1762685764512" duration="26749000" />
     </task>
     <servers />
   </component>
